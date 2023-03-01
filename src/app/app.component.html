@@ -15,7 +15,7 @@
                               Name is required
                           </span>
                           <span class="text-danger"
-                          *ngIf="(registerFormControl?.name?.touched || submitted) && registerFormControl?.name?.value && validateControl('name')">
+                          *ngIf="(registerFormControl?.name?.touched || submitted) && registerFormControl?.name?.value && isValueExists('name')">
                             Bob can't be entered
                       </span>
                       </div>
@@ -31,7 +31,7 @@
                               Enter a valid email address
                           </span>
                           <span class="text-danger"
-                          *ngIf="(registerFormControl?.name?.touched || submitted) && registerFormControl?.email?.value && validateControl('email')">
+                          *ngIf="(registerFormControl?.name?.touched || submitted) && registerFormControl?.email?.value && isValueExists('email')">
                             example.com can't be entered
                       </span>
                       </div>

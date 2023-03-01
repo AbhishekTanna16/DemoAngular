@@ -23,7 +23,7 @@ export class AppComponent {
   get registerFormControl() {
     return this.registerForm?.controls;
   }
-  validateControl(type:string) {
+  isValueExists(type:string) {
     let isInValid = true
     if(type ==='name' && this.registerFormControl?.name.value){
       const name = this.registerFormControl.name.value
@@ -40,7 +40,7 @@ export class AppComponent {
     return isInValid
   }
   checkIsFormInValid(){
-      return (!this.registerForm?.valid || ((this.registerFormControl?.name?.value && this.validateControl('name')) || (this.registerFormControl?.email?.value && this.validateControl('email'))))
+      return (!this.registerForm?.valid || ((this.registerFormControl?.name?.value && this.isValueExists('name')) || (this.registerFormControl?.email?.value && this.isValueExists('email'))))
   } 
 
   onSubmit() {
