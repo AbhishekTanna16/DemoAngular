@@ -6,32 +6,37 @@
                   <h3>Demo App</h3>
               </div>
               <div class="card-body">
-                  <form class="form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                  <form class="form" [formGroup]="validatorForm" (ngSubmit)="onSubmit()">
                       <div class="form-group">
                           <label>Name</label>
                           <input type="text" class="form-control" formControlName="name">
                           <span class="text-danger"
-                              *ngIf="(registerFormControl?.name?.touched || submitted) && registerFormControl?.name?.errors?.required">
+                              *ngIf="(validatorFormControl?.name?.touched || submitted) && validatorFormControl?.name?.errors?.required">
                               Name is required
                           </span>
                           <span class="text-danger"
-                          *ngIf="(registerFormControl?.name?.touched || submitted) && registerFormControl?.name?.value && isValueExists('name')">
-                            Bob can't be entered
-                      </span>
+                              *ngIf="(validatorFormControl?.name?.touched || submitted) && validatorFormControl?.name?.errors?.minlength">
+                              Name must contain minimum 2 characters
+                          </span>
+                          <span class="text-danger"
+                                *ngIf="validatorFormControl.name.touched && validatorFormControl.name.errors?.invalidUserName">
+                                Bob can't be entered
+                          </span>
+                          
                       </div>
                       <div class="form-group">
                           <label>Email</label>
                           <input type="text" class="form-control" formControlName="email">
                           <span class="text-danger"
-                              *ngIf="(registerFormControl?.email?.touched || submitted) && registerFormControl?.email?.errors?.required">
+                              *ngIf="(validatorFormControl?.email?.touched || submitted) && validatorFormControl?.email?.errors?.required">
                               Email is required
                           </span>
                           <span class="text-danger"
-                              *ngIf="registerFormControl?.email?.touched && registerFormControl?.email?.errors?.email">
+                              *ngIf="validatorFormControl?.email?.touched && validatorFormControl?.email?.errors?.invalidEmail">
                               Enter a valid email address
                           </span>
                           <span class="text-danger"
-                          *ngIf="(registerFormControl?.name?.touched || submitted) && registerFormControl?.email?.value && isValueExists('email')">
+                          *ngIf="(validatorFormControl?.email?.touched || submitted) && validatorFormControl.email.errors?.notValidEmail">
                             example.com can't be entered
                       </span>
                       </div>

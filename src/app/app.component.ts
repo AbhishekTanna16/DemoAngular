@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { CustomFormValidators } from './custom-form-validators';
 
 @Component({
   selector: 'app-root',
@@ -8,31 +9,32 @@ import { Validators, FormGroup, FormBuilder } from '@angular/forms';
 })
 export class AppComponent {
   title = 'demo';
-  registerForm: FormGroup;
+  validatorForm: FormGroup;
   submitted = false;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private customFormValidator: CustomFormValidators
   ) {
-    this.registerForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,10}$")]]
+    this.validatorForm = this.fb.group({
+      name: ['', [Validators.compose([Validators.required,Validators.minLength(2), this.customFormValidator.userNameValidator()])]],
+      email: ['', [Validators.compose([Validators.required, this.customFormValidator.emailPatternAndValueValidator()])]]
     }
     );
   }
-  get registerFormControl() {
-    return this.registerForm?.controls;
+  get validatorFormControl() {
+    return this.validatorForm?.controls;
   }
   isValueExists(type:string) {
     let isInValid = true
-    if(type ==='name' && this.registerFormControl?.name.value){
-      const name = this.registerFormControl.name.value
+    if(type ==='name' && this.validatorFormControl?.name.value){
+      const name = this.validatorFormControl.name.value
       const UserList = ['Bob'];
       isInValid = UserList.includes(name)
       
     }
-    else if(type ==='email' && this.registerFormControl?.email.value){
-      const email = this.registerFormControl.email.value
+    else if(type ==='email' && this.validatorFormControl?.email.value){
+      const email = this.validatorFormControl.email.value
       const emailList = ['example.com'];
       isInValid =  emailList.includes(email.toLocaleLowerCase())
       
@@ -40,14 +42,14 @@ export class AppComponent {
     return isInValid
   }
   checkIsFormInValid(){
-      return (!this.registerForm?.valid || ((this.registerFormControl?.name?.value && this.isValueExists('name')) || (this.registerFormControl?.email?.value && this.isValueExists('email'))))
+      return (!this.validatorForm?.valid)
   } 
 
   onSubmit() {
     this.submitted = true;
     if (!this.checkIsFormInValid()) {
-      alert('Form Submitted succesfully!!!\n Check the values in browser console.');
-      console.table(this.registerForm.value);
+      alert('Form Submitted succesfully');
+      console.table(this.validatorForm.value);
     }
   }
 }
